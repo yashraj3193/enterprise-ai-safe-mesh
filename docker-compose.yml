@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  fastapi-app:
+    build: .
+    container_name: backend-mesh-service
+    ports:
+      - "8000:8000"
+    volumes:
+      - app_db_volume:/app/data
+    depends_on:
+      - ollama-service
+
+  ollama-service:
+    image: ollama/ollama:latest
+    container_name: ollama-cpu-engine
+    ports:
+      - "11434:11434"
+    volumes:
+      - model_storage_volume:/root/.ollama
+
+volumes:
+  app_db_volume:
+  model_storage_volume:
