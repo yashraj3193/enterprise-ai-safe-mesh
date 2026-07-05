@@ -1,8 +1,26 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from pydantic import BaseModel
-from graph import compiled_mesh_engine
+from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
+from graph import mesh_builder
 
-app = FastAPI(title="Production Local Mesh API")
+# State storage for our runtime engine instance
+compiled_mesh_engine = None
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global compiled_mesh_engine
+    # Setup connection safely inside FastAPI's running async event loop
+    async with AsyncSqliteSaver.from_conn_string("/app/data/audit_state.db") as checkpointer:
+        compiled_mesh_engine = mesh_builder.compile(
+            checkpointer=checkpointer,
+            interrupt_before=["production_commit"]
+        )
+        print("💥 Elite AI Safe-Mesh Engine compiled with Async State Persistence successfully!")
+        yield
+    # Connection cleanly teardown here when app closes
+
+app = FastAPI(title="Production Local Mesh API", lifespan=lifespan)
 
 class AuditRequest(BaseModel):
     instruction: str

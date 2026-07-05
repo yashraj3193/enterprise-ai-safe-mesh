@@ -1,0 +1,17 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+venv/
+env/
+.env
+
+# Project specific databases & local storage
+data/
+*.db
+*.sqlite3
+
+# Docker local logs
+*.log

@@ -1,6 +1,5 @@
-import sqlite3
 from langgraph.graph import StateGraph, START, END
-from langgraph.checkpoint.sqlite import SqliteSaver
+from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 from state import MeshSystemState
 from nodes import (
     local_llm_code_generator_node,
@@ -27,11 +26,4 @@ mesh_builder.add_conditional_edges(
 )
 mesh_builder.add_edge("production_commit", END)
 
-# Persistent storage DB path inside container volume
-db_connection = sqlite3.connect("/app/data/audit_state.db", check_same_thread=False)
-disk_checkpointer = SqliteSaver(db_connection)
-
-compiled_mesh_engine = mesh_builder.compile(
-    checkpointer=disk_checkpointer,
-    interrupt_before=["production_commit"]
-)
+# We initialize checkpointer inside the runtime lifespan loop in main.py to handle async loops cleanly.
