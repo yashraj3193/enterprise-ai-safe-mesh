@@ -1,5 +1,5 @@
 from langgraph.graph import StateGraph, START, END
-from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
+# Note: Humne yahan se sqlite import hata diya hai kyunki compilation ab yahan nahi hoga
 from state import MeshSystemState
 from nodes import (
     local_llm_code_generator_node,
@@ -26,4 +26,5 @@ mesh_builder.add_conditional_edges(
 )
 mesh_builder.add_edge("production_commit", END)
 
-# We initialize checkpointer inside the runtime lifespan loop in main.py to handle async loops cleanly.
+# 🌟 PURE CHANGE: Hum compiled_mesh_engine yahan nahi banayenge. 
+# Hum yahan se sirf mesh_builder export karenge taaki main.py ise safely compile kar sake.

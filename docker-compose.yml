@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   fastapi-app:
     build: .
@@ -9,7 +7,11 @@ services:
     volumes:
       - app_db_volume:/app/data
     depends_on:
-      - ollama-service
+      ollama-init:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    networks:
+      - mesh-network
 
   ollama-service:
     image: ollama/ollama:latest
@@ -18,7 +20,28 @@ services:
       - "11434:11434"
     volumes:
       - model_storage_volume:/root/.ollama
+    restart: unless-stopped
+    networks:
+      - mesh-network
+
+  ollama-init:
+    image: curlimages/curl:latest
+    depends_on:
+      - ollama-service
+    entrypoint: >
+      sh -c "
+      until curl -s http://ollama-cpu-engine:11434/api/tags; do echo 'waiting for ollama...'; sleep 2; done;
+      curl -X POST http://ollama-cpu-engine:11434/api/pull -d '{\"name\": \"llama3.2\"}';
+      "
+    networks:
+      - mesh-network
+
+networks:
+  mesh-network:
+    driver: bridge
 
 volumes:
   app_db_volume:
+    name: app_db_volume
   model_storage_volume:
+    name: model_storage_volume
