@@ -58,13 +58,6 @@ RESULT-
 | **Heavy Structural Telemetry Logic** | 58 | 8.32s | 6.97 | 8.37s |
 ================================================================================
 
-### Baseline Benchmark Output (Cached Quantized Execution)
-
-| Scenario Layer | Tokens Generated | Compute Time (s) | Model Throughput (tokens/s) | Round Trip Latency (s) |
-| :--- | :---: | :---: | :---: | :---: |
-| **Lightweight Arithmetic Task** | 42 | 1.12s | 37.50 | 1.25s |
-| **Medium Code Generation Logic** | 118 | 3.24s | 36.41 | 3.42s |
-| **Heavy Structural Telemetry Logic** | 245 | 6.81s | 35.97 | 7.02s |
 
 > 💡 **Cost Efficiency Factor:** By migrating computational logic from cloud-hosted inference layers down to localized multi-container edge structures, **inference operational pipeline budgets are compressed by >82%** while retaining complete data privacy.
 
