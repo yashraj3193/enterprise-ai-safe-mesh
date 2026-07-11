@@ -6,6 +6,9 @@ services:
       - "8000:8000"
     volumes:
       - app_db_volume:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - sandbox_scratch:/app/sandbox_scratch 
+      - ./tests:/app/tests 
     depends_on:
       ollama-init:
         condition: service_completed_successfully
@@ -45,3 +48,5 @@ volumes:
     name: app_db_volume
   model_storage_volume:
     name: model_storage_volume
+  sandbox_scratch:                            # 🌟 NEW: named volume declare karo
+    name: sandbox_scratch
