@@ -39,6 +39,13 @@ An asymmetric, production-grade multi-agent execution pipeline orchestrated via 
 
 ---
 
+## 🗺️ Architectural Topology & Core Flows
+
+<!-- 🎨 Adding the newly generated high-resolution diagram at the top -->
+![Architecture Diagram](architecture_graph.png)
+
+---
+
 ## 🔒 Security Architecture — Defense in Depth
 
 Untrusted, LLM-generated code is never executed with full server privileges. Two independent layers guard execution:
